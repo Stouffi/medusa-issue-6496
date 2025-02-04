@@ -46,6 +46,7 @@ describe("RedisEventBusService", () => {
         {
           connection: expect.any(Object),
           prefix: "RedisEventBusService",
+          autorun: false
         }
       )
     })

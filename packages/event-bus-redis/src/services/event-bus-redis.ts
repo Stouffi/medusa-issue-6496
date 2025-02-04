@@ -43,6 +43,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       prefix: `${this.constructor.name}`,
       ...(moduleOptions.queueOptions ?? {}),
       connection: eventBusRedisConnection,
+      autorun: false
     })
 
     // Register our worker to handle emit calls
@@ -61,6 +62,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   }
 
   __hooks = {
+    onApplicationStart: async () => {
+      await this.bullWorker_?.run()
+    },
     onApplicationShutdown: async () => {
       await this.queue_.close()
       // eslint-disable-next-line max-len
